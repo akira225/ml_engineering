@@ -7,7 +7,6 @@ def dataset_minmax(dataset):
     return minmax
 
 
-
 def normalize(dataset, minmax):
     for row in dataset:
         for i in range(len(row)):
