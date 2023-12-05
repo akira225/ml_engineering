@@ -1,3 +1,27 @@
-# Engineering practices in ML course tasks
+# HW1
  
-## All homeworks will be located in respective branches
+### Packet manager used [Poetry](https://python-poetry.org/)
+
+#### Install Poetry
+
+```
+pip install poetry
+```
+
+#### Install dependencies
+``` 
+poetry install
+```
+
+#### Using [Black](https://github.com/psf/black) and [Pylint](https://pypi.org/project/pylint/)
+
+```
+black .
+pylint <filename>
+```
+
+#### Running code
+
+```
+poetry run python3 main.py
+```
