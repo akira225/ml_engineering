@@ -27,7 +27,7 @@ def divide_df(all_data):
 
 
 def fill_missing_values(df_all: pd.DataFrame):
-    df_all['Age'] = df_all.groupby(['Sex', 'Pclass'])['Age'].apply(lambda x: x.fillna(x.median()))
+    # df_all['Age'] = df_all.groupby(['Sex', 'Pclass'])['Age'].apply(lambda x: x.fillna(x.median()))
     med_fare = df_all.groupby(['Pclass', 'Parch', 'SibSp']).Fare.median()[3][0][0]
     df_all['Fare'] = df_all['Fare'].fillna(med_fare)
     df_all['Embarked'] = df_all['Embarked'].fillna('S')
@@ -59,7 +59,7 @@ def transform_features(data: pd.DataFrame):
 if __name__ == '__main__':
     args = parse_arguments()
     data = pd.read_csv(args.data)
-    data_test = pd.read_csv(args.data_test)
+    data_test = pd.read_csv(args.test_data)
     df_all = concat_df(data, data_test)
     fill_missing_values(df_all)
     transform_features(df_all)

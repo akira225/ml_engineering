@@ -33,9 +33,9 @@ def train_best_model(X_train, X_val, y_train, y_val):
 
 
 def save_model(model_path, report_path, model, X_val, y_val):
-    with open(model_path + '/model.bin', 'wb') as f:
+    with open(model_path, 'wb') as f:
         pickle.dump(model, f)
-    with open(report_path + '/report.txt', 'w') as f:
+    with open(report_path, 'w') as f:
         f.write(classification_report(y_val, model.predict(X_val)))
 
 
