@@ -2,10 +2,21 @@ import warnings
 import numpy as np
 import pandas as pd
 import pickle
+import argparse
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 
 warnings.filterwarnings('ignore')
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--val", required=True)
+    parser.add_argument("--train", required=True)
+    parser.add_argument("--model_dir", required=True)
+    parser.add_argument("--report_dir", required=True)
+    args = parser.parse_args()
+    return args
 
 
 def train_best_model(X_train, X_val, y_train, y_val):
@@ -21,23 +32,20 @@ def train_best_model(X_train, X_val, y_train, y_val):
     return models[best_i]
 
 
-def save_model(model, X_val, y_val):
-    with open('path.bin', 'wb') as f:
+def save_model(model_path, report_path, model, X_val, y_val):
+    with open(model_path + '/model.bin', 'wb') as f:
         pickle.dump(model, f)
-    with open('path.txt', 'w') as f:
+    with open(report_path + '/report.txt', 'w') as f:
         f.write(classification_report(y_val, model.predict(X_val)))
 
 
 if __name__ == '__main__':
-    # argparse
-    train = pd.read_csv('../data/preprocessed/train.csv')
-    val = pd.read_csv('../data/preprocessed/val.csv')
+    args = parse_arguments()
+    train = pd.read_csv(args.train)
+    val = pd.read_csv(args.val)
     y_train = train['Survived']
     y_val = val['Survived']
     X_train = train.drop(['PassengerId', 'Survived'], axis=1, inplace=False).values
     X_val = val.drop(['PassengerId', 'Survived'], axis=1, inplace=False).values
     model = train_best_model(X_train, X_val, y_train, y_val)
-    save_model(model, X_val, y_val)
-
-
-
+    save_model(args.model_dir, args.report_dir, model, X_val, y_val)

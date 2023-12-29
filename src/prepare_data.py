@@ -1,7 +1,19 @@
 import warnings
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import argparse
 warnings.filterwarnings('ignore')
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", required=True)
+    parser.add_argument("--test_data", required=True)
+    parser.add_argument("--test", required=True)
+    parser.add_argument("--val", required=True)
+    parser.add_argument("--train", required=True)
+    args = parser.parse_args()
+    return args
 
 
 def concat_df(train_data, test_data):
@@ -45,9 +57,9 @@ def transform_features(data: pd.DataFrame):
 
 
 if __name__ == '__main__':
-    # argparse
-    data = pd.read_csv('../data/raw/train.csv')
-    data_test = pd.read_csv('../data/raw/test.csv')
+    args = parse_arguments()
+    data = pd.read_csv(args.data)
+    data_test = pd.read_csv(args.data_test)
     df_all = concat_df(data, data_test)
     fill_missing_values(df_all)
     transform_features(df_all)
@@ -60,6 +72,6 @@ if __name__ == '__main__':
                                              'Fare_cat'])
     train, test = divide_df(df_all)
     train, val = train_test_split(train, test_size=0.25, random_state=42)
-    train.to_csv('../data/preprocessed/train.csv', index=False)
-    val.to_csv('../data/preprocessed/val.csv', index=False)
-    test.to_csv('../data/preprocessed/test.csv', index=False)
+    train.to_csv(args.train, index=False)
+    val.to_csv(args.val, index=False)
+    test.to_csv(args.test, index=False)
